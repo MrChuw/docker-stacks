@@ -1,0 +1,19 @@
+services:
+  Alias_site:
+    image: ghcr.io/mrchuw/twitch-clipper:main
+    container_name: twitch-clipper
+    # ports:
+    #   - ${PORT:-38989}:8989
+    environment:
+      - ANALYTICS_URL=${ANALYTICS_URL:-}
+      - ANALYTICS_UUID=${ANALYTICS_UUID:-}
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+    restart: unless-stopped
+    networks:
+      - caddy
+
+networks:
+  caddy:
+    external: true
