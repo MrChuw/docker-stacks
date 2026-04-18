@@ -1,0 +1,18 @@
+services:
+  Alias_site:
+    image: ghcr.io/mrchuw/dicio-api:main
+    container_name: dicio
+    # ports:
+    #   - ${PORT:-12834}:5454
+    environment:
+      - ANALYTICS_URL=${ANALYTICS_URL:-}
+      - ANALYTICS_UUID=${ANALYTICS_UUID:-}
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - caddy
+
+networks:
+  caddy:
+    external: true
