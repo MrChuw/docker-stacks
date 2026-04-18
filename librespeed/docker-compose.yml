@@ -1,0 +1,22 @@
+---
+services:
+  librespeed:
+    image: lscr.io/linuxserver/librespeed:latest
+    container_name: librespeed
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - DB_TYPE=sqlite
+      - IPINFO_APIKEY=${IPINFO_APIKEY}
+    volumes:
+      - ./config:/config
+    #ports:
+    #  - ${PORT:-7432}:80
+    restart: unless-stopped
+    networks:
+      - caddy
+
+networks:
+  caddy:
+    external: true
