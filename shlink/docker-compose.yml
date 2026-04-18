@@ -1,0 +1,69 @@
+---
+name: shlink
+services:
+    mysql:
+        image: mysql:latest
+        container_name: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        volumes:
+            - ./mysql/mysql-data:/var/lib/mysql
+            - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+        networks:
+            - shlink-default
+
+        logging:
+            driver: json-file
+            options:
+                max-size: 20m
+                max-file: "30"
+
+    my_shlink:
+        image: shlinkio/shlink:stable
+        container_name: my_shlink
+        # ports:
+        #     - "8080:8080"
+        environment:
+            SKIP_INITIAL_GEOLITE_DOWNLOAD: ${SKIP_INITIAL_GEOLITE_DOWNLOAD}
+            DEFAULT_DOMAIN: ${DEFAULT_DOMAIN}
+            IS_HTTPS_ENABLED: ${IS_HTTPS_ENABLED}
+            GEOLITE_LICENSE_KEY: ${GEOLITE_LICENSE_KEY}
+            DB_DRIVER: ${DB_DRIVER}
+            DB_USER: ${DB_USER}
+            DB_PASSWORD: ${DB_PASSWORD}
+            DB_HOST: ${DB_HOST}
+            SHELL_VERBOSITY: ${SHELL_VERBOSITY}
+        depends_on:
+            - mysql
+        links:
+            - mysql
+        networks:
+            - caddy
+            - shlink-default
+        logging:
+            driver: json-file
+            options:
+                max-size: 20m
+                max-file: "30"
+
+  # shlink-web-client:
+  #   image: shlinkio/shlink-web-client
+  #   container_name: shlink-web-client
+  #   ports:
+  #     - "4000:8080"
+  #   environment:
+  #     - SHLINK_SERVER_URL=https://172.24.0.25:8080
+  #     - SHLINK_SERVER_API_KEY=f44cdebb-d61f-42d2-abd5-169770901bcb
+
+  #   networks:
+  #     - caddy
+
+
+networks:
+    caddy:
+        external: true
+    shlink-default:
+
