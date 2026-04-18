@@ -1,0 +1,72 @@
+---
+services:
+    rsshub:
+        # two ways to enable puppeteer:
+        # * comment out marked lines, then use this image instead: diygod/rsshub:chromium-bundled
+        # * (consumes more disk space and memory) leave everything unchanged
+        image: diygod/rsshub
+        restart: always
+#        ports:
+#            - "1200:1200"
+        environment:
+            NODE_ENV: production
+            CACHE_TYPE: redis
+            REDIS_URL: "redis://redis:6379/"
+            PUPPETEER_WS_ENDPOINT: "ws://browserless:3000" # marked
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:1200/healthz"]
+            interval: 120s
+            timeout: 10s
+            retries: 3
+        depends_on:
+            - redis
+            - browserless # marked
+        networks:
+            - caddy
+            - rsshub-default
+
+    browserless: # marked
+        image: browserless/chrome # marked
+        restart: always # marked
+        ulimits: # marked
+            core: # marked
+                hard: 0 # marked
+                soft: 0 # marked
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:3000/pressure"]
+            interval: 120s
+            timeout: 10s
+            retries: 3
+
+    redis:
+        image: redis:alpine
+        restart: always
+        volumes:
+            - ./redis-data:/data
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 120s
+            timeout: 10s
+            retries: 5
+            start_period: 5s
+        networks:
+            - rsshub-default
+
+    rss-bridge:
+        image: rssbridge/rss-bridge:latest
+        volumes:
+        - ./rssbridge/config:/config
+        - ./rssbridge/cache:/app/cache
+        #ports:
+        #- 8083:80
+        restart: unless-stopped
+        networks:
+          - caddy
+
+
+networks:
+  caddy:
+    external: true
+  rsshub-default:
+
+
