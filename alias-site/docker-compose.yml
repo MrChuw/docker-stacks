@@ -4,6 +4,9 @@ services:
     container_name: Alias_site
     # ports:
     #   - ${PORT:-12836}:5454
+    environment:
+      - ANALYTICS_URL=${ANALYTICS_URL:-}
+      - ANALYTICS_UUID=${ANALYTICS_UUID:-}
     volumes:
       - ./logs:/app/logs
     restart: unless-stopped
