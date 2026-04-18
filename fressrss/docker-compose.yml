@@ -1,0 +1,38 @@
+---
+services:
+  freshrss:
+      image: lscr.io/linuxserver/freshrss:latest
+      container_name: freshrss
+      environment:
+        - PUID=1000
+        - PGID=1000
+        - TZ=Etc/UTC
+      volumes:
+        - ./config:/config
+      #ports:
+      #  - 3480:80
+      restart: unless-stopped
+      networks:
+        - caddy
+        - freshrss-default
+
+    freshrss_db:
+      image: mariadb
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      volumes:
+        - ./.db_data:/var/lib/mysql
+      networks:
+      - freshrss-default
+
+
+networks:
+  caddy:
+    external: true
+  freshrss-default:
+
+
