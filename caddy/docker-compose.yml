@@ -1,12 +1,11 @@
 ---
 services:
   caddy:
-    build:
-      context: .
-      dockerfile: Dockerfile
-
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     container_name: caddy
-  #  image: caddy:latest
+    image: ghcr.io/mrchuw/ntpd-rs:latest
   #  image: ghcr.io/caddybuilds/caddy-cloudflare:latest
   #  image: lucaslorentz/caddy-docker-proxy:latest
   #  network_mode: host
