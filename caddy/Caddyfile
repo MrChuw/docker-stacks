@@ -1,0 +1,133 @@
+import /shared/shared.caddy
+
+{
+  metrics {
+    per_host
+  }
+  admin :2019
+  log {
+    output file /var/log/caddy/caddy_main.log {
+      roll_size 500MiB
+      roll_keep 10
+      roll_keep_for 365d
+    }
+    format json
+    level INFO
+  }
+}
+
+:2020 {
+  reverse_proxy localhost:2019 {
+    header_up Host localhost:2019
+    }
+}
+
+:80, :443 {
+  import common
+  redir https://google.com
+}
+
+http://syncyomi.{$DOMAIN} {
+  import common
+  reverse_proxy http://syncyomi:8282
+}
+
+http://speed.{$DOMAIN} {
+  import common
+  #reverse_proxy http://librespeed:80
+  @blocked not remote_ip 100.104.109.70
+  respond @blocked "Forbidden" 403
+
+  reverse_proxy http://librespeed:80
+}
+
+http://vaultbit.{$DOMAIN} {
+  import common
+  reverse_proxy http://vaultwarden:80
+}
+
+http://uma.{$DOMAIN} {
+  import common
+  reverse_proxy http://umami:3000
+}
+
+http://shlink.{$DOMAIN} {
+  import common
+  reverse_proxy http://my_shlink:8080
+}
+
+http://rsshub.{$DOMAIN} {
+  import common
+  reverse_proxy http://rsshub:1200
+}
+
+http://rssbridge.{$DOMAIN} {
+  import common
+  reverse_proxy http://rss-bridge:80
+}
+
+http://im.{$DOMAIN}, http://i.{$DOMAIN} {
+  import common
+  reverse_proxy http://image-server:7776
+}
+
+http://dicio.{$DOMAIN} {
+  import common
+  reverse_proxy http://dicio:12834
+}
+
+http://color.{$DOMAIN} {
+  import common
+  reverse_proxy http://color:8383
+}
+
+http://cliptv.{$DOMAIN} {
+  import common
+  reverse_proxy http://twitch-clipper:8989
+}
+
+http://car.{$DOMAIN} {
+  import common
+  reverse_proxy http://Image-Carousel:5000
+}
+
+http://bin.{$DOMAIN} {
+  import common
+  reverse_proxy http://haste-server:7777
+}
+
+http://alias.{$DOMAIN} {
+  import common
+  reverse_proxy http://Alias_site:5454
+}
+
+http://freshrss.{$DOMAIN} {
+  import common
+  reverse_proxy http://freshrss:80
+}
+
+http://hand.{$DOMAIN} {
+  import common
+  reverse_proxy http://dockhand:3000
+}
+
+
+# Other server
+
+http://ri.{$DOMAIN} {
+  import common
+  reverse_proxy http://rimgo:3000
+}
+
+http://mich.{$DOMAIN} {
+  import common
+  reverse_proxy http://immich_server:2283
+}
+
+http://logs.{$DOMAIN} {
+  import common
+  reverse_proxy http://rustlog:18025
+}
+
+
+

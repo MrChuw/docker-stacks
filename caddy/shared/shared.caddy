@@ -1,0 +1,40 @@
+(header_security) {
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Content-Security-Policy "default-src 'self';"
+    }
+}
+
+(common_proxy) {
+    header_up Host {host}
+    header_up X-Real-IP {remote_host}
+    header_up X-Forwarded-For {remote_host}
+    header_up X-Forwarded-Proto {scheme}
+}
+
+(default-robots) {
+    handle /robots.txt {
+        @no_robots {
+            not file {path}
+        }
+        header @no_robots Content-Type "text/plain"
+        respond @no_robots "User-agent: *\nDisallow: /"
+    }
+}
+
+(crowdsec_check) {
+    crowdsec
+}
+
+(common_encode) {
+    encode zstd gzip
+}
+
+(common) {
+    #metrics
+    import common_encode
+    import default-robots
+}
