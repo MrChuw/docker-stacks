@@ -1,6 +1,6 @@
 services:
   ntpd:
-    build: .
+    image: ghcr.io/mrchuw/ntpd-rs:latest
     container_name: ntpd-rs
     cap_add:
       - SYS_TIME
