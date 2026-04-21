@@ -38,6 +38,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Normalize repository owner
+        id: owner
+        run: |
+          OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          echo "owner=$OWNER" >> $GITHUB_OUTPUT
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v7
         with:
@@ -45,8 +51,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/${{ steps.info.outputs.service_name }}:latest
-            ghcr.io/${{ github.repository_owner }}/${{ steps.info.outputs.service_name }}:${{ steps.info.outputs.version }}
+            ghcr.io/${{ steps.owner.outputs.owner }}/${{ steps.info.outputs.service_name }}:latest
+            ghcr.io/${{ steps.owner.outputs.owner }}/${{ steps.info.outputs.service_name }}:${{ steps.info.outputs.version }}
 
           cache-from: type=gha
           cache-to: type=gha,mode=max
