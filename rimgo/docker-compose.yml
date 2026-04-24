@@ -15,7 +15,7 @@ services:
       - no-new-privileges
     cap_drop:
       - ALL
-    env_file: .env
+    # env_file: .env
     networks:
       - caddy
 
