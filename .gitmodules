@@ -1,0 +1,3 @@
+[submodule "rimgo/rimgo-src"]
+	path = rimgo/rimgo-src
+	url = https://codeberg.org/rimgo/rimgo.git

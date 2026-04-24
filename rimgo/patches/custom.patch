@@ -1,0 +1,41 @@
+diff --git a/main.go b/main.go
+index 7877ca3..9e3a34e 100644
+--- a/main.go
++++ b/main.go
+@@ -42,6 +42,7 @@ func main() {
+ 
+ 	app := fiber.New(fiber.Config{
+ 		Views:             engine,
++		PassLocalsToViews: true,
+ 		Prefork:           utils.Config.FiberPrefork,
+ 		UnescapePath:      true,
+ 		StreamRequestBody: true,
+@@ -63,6 +64,13 @@ func main() {
+ 		},
+ 	}))
+ 
++	app.Use(func(c *fiber.Ctx) error {
++		c.Locals("UMAMI_SCRIPT_URL", os.Getenv("UMAMI_SCRIPT_URL"))
++		c.Locals("UMAMI_WEBSITE_ID", os.Getenv("UMAMI_WEBSITE_ID"))
++		return c.Next()
++	})
++	app.Use(utils.SecurityHeaders())
++
+ 	if os.Getenv("ENV") == "dev" {
+ 		app.Use("/static", filesystem.New(filesystem.Config{
+ 			Root: http.Dir("./static"),
+diff --git a/views/partials/head.hbs b/views/partials/head.hbs
+index 27034c5..af42243 100644
+--- a/views/partials/head.hbs
++++ b/views/partials/head.hbs
+@@ -12,4 +12,7 @@
+ <meta name="msapplication-config" content="/static/favicon/browserconfig.xml">
+ <meta name="theme-color" content="#ffffff">
+ 
+-<link rel="stylesheet" href="/static/app.css" />
+\ No newline at end of file
++<link rel="stylesheet" href="/static/app.css" />
++{{#if UMAMI_SCRIPT_URL}}
++<script defer src="{{UMAMI_SCRIPT_URL}}" data-website-id="{{UMAMI_WEBSITE_ID}}"></script>
++{{/if}}
+\ No newline at end of file

@@ -1,0 +1,23 @@
+---
+services:
+  rimgo:
+    image: ghcr.io/mrchuw/rimgo:latest
+    # ports:
+    #   - 33000:3000
+    restart: unless-stopped
+    user: 65534:65534 # equivalent to `nobody`
+    read_only: true
+    environment:
+      - UMAMI_SCRIPT_URL=${UMAMI_SCRIPT_URL}
+      - UMAMI_WEBSITE_ID=${UMAMI_WEBSITE_ID}
+    security_opt:
+      - no-new-privileges
+    cap_drop:
+      - ALL
+    env_file: .env
+    networks:
+      - caddy
+
+networks:
+  caddy:
+    external: true
