@@ -1,6 +1,6 @@
 services:
   Alias_site:
-    image: ghcr.io/mrchuw/image-carousel:main
+    image: ghcr.io/mrchuw/image-carousel:latest
     container_name: Image-Carousel
     # ports:
     #   - ${PORT:-5000}:5000
