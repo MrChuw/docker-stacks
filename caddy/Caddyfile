@@ -126,7 +126,7 @@ http://mich.{$DOMAIN} {
 
 http://logs.{$DOMAIN} {
   import common
-  reverse_proxy http://rustlog:18025
+  reverse_proxy http://rustlog:8025
 }
 
 
