@@ -22,7 +22,6 @@ services:
     image: ghcr.io/mrchuw/rustlog:latest
     # ports:
     #   - 18025:8025
-    # command: ["sleep", "100000"]
     volumes:
       - "./config.json:/config.json"
     environment:
