@@ -1,0 +1,41 @@
+---
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    container_name: clickhouse
+    #ports:
+    #  - 18123:8123
+    volumes:
+      - "./z_log_queries.xml:/etc/clickhouse-server/users.d/z_log_queries.xml"
+      - "./z_clickhouse-system-logs-ttl.xml:/etc/clickhouse-server/config.d/z_system-logs-ttl.xml"
+      - "./ch-data:/var/lib/clickhouse:rw"
+    environment:
+      CLICKHOUSE_DB: ${CLICKHOUSE_DB}
+      CLICKHOUSE_USER: ${CLICKHOUSE_USER}
+      CLICKHOUSE_PASSWORD: ${CLICKHOUSE_PASSWORD}
+    restart: unless-stopped
+    networks:
+      - rustlog_default
+
+  rustlog:
+    container_name: rustlog
+    image: ghcr.io/mrchuw/rustlog:latest
+    # ports:
+    #   - 18025:8025
+    # command: ["sleep", "100000"]
+    volumes:
+      - "./config.json:/config.json"
+    environment:
+      ANALYTICS_URL: ${ANALYTICS_URL}
+      ANALYTICS_UUID: ${ANALYTICS_UUID}
+    depends_on:
+      - clickhouse
+    restart: unless-stopped
+    networks:
+      - rustlog_default
+      - caddy
+
+networks:
+  caddy:
+    external: true
+  rustlog_default:

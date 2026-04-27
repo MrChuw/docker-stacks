@@ -1,0 +1,16 @@
+{
+  "clickhouseUrl": "http://clickhouse:8123",
+  "clickhouseDb": "super-secret-string-that-need-to-be-replaced",
+  "clickhouseUsername": "super-secret-string-that-need-to-be-replaced",
+  "clickhousePassword": "super-secret-string-that-need-to-be-replaced",
+  "clickhouseFlushInterval": 10,
+  "listenAddress": "0.0.0.0:8025",
+  "channels": [],
+  "clientID": "super-secret-string-that-need-to-be-replaced",
+  "clientSecret": "super-secret-string-that-need-to-be-replaced",
+  "admins": [
+    "super-secret-string-that-need-to-be-replaced"
+  ],
+  "optOut": {},
+  "adminAPIKey": "super-secret-string-that-need-to-be-replaced"
+}

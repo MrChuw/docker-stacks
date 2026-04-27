@@ -1,3 +1,6 @@
 [submodule "rimgo/rimgo-src"]
 	path = rimgo/rimgo-src
 	url = https://codeberg.org/rimgo/rimgo.git
+[submodule "rustlog/rustlog-src"]
+	path = rustlog/rustlog-src
+	url = https://github.com/boring-nick/rustlog
