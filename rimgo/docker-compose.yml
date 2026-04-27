@@ -10,7 +10,7 @@ services:
     environment:
       - UMAMI_SCRIPT_URL=${UMAMI_SCRIPT_URL}
       - UMAMI_WEBSITE_ID=${UMAMI_WEBSITE_ID}
-      - UMAMI_HOST=&{UMAMI_HOST}
+      - UMAMI_HOST=${UMAMI_HOST}
     security_opt:
       - no-new-privileges
     cap_drop:
