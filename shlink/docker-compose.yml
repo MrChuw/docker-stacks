@@ -2,7 +2,7 @@
 name: shlink
 services:
     mysql:
-        image: mysql:latest
+        image: mysql:8.0
         container_name: mysql
         environment:
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -49,18 +49,15 @@ services:
                 max-size: 20m
                 max-file: "30"
 
-  # shlink-web-client:
-  #   image: shlinkio/shlink-web-client
-  #   container_name: shlink-web-client
-  #   ports:
-  #     - "4000:8080"
-  #   environment:
-  #     - SHLINK_SERVER_URL=https://172.24.0.25:8080
-  #     - SHLINK_SERVER_API_KEY=f44cdebb-d61f-42d2-abd5-169770901bcb
-
-  #   networks:
-  #     - caddy
-
+    shlink-web-client:
+        image: shlinkio/shlink-web-client
+        container_name: shlink-web-client
+        # ports:
+        #     - "4000:8080"
+        environment:
+            - SHLINK_SERVER_URL=${SHLINK_WEB_SERVER_URL}
+        networks:
+            - caddy
 
 networks:
     caddy:
