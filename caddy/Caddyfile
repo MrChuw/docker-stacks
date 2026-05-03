@@ -56,6 +56,11 @@ http://shlink.{$DOMAIN} {
   reverse_proxy http://my_shlink:8080
 }
 
+http://dashshlink.{$DOMAIN} {
+  import common
+  reverse_proxy http://shlink-web-client:8080
+}
+
 http://rsshub.{$DOMAIN} {
   import common
   reverse_proxy http://rsshub:1200
