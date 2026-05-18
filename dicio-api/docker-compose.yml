@@ -1,6 +1,6 @@
 services:
   Alias_site:
-    image: ghcr.io/mrchuw/dicio-api:main
+    image: ghcr.io/mrchuw/dicio-api:latest
     container_name: dicio
     # ports:
     #   - ${PORT:-12834}:5454

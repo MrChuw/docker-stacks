@@ -1,6 +1,6 @@
 services:
   Alias_site:
-    image: ghcr.io/mrchuw/color-in-memory:main
+    image: ghcr.io/mrchuw/color-in-memory:latest
     container_name: color
     # ports:
     #   - ${PORT:-12836}:5454
