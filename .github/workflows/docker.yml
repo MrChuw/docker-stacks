@@ -31,7 +31,6 @@ jobs:
         run: |
           git submodule update --init --recursive --depth=1 ./${{ steps.info.outputs.service_name }}
 
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
 

@@ -1,6 +1,6 @@
 services:
   Alias_site:
-    image: ghcr.io/mrchuw/alias-site:main
+    image: ghcr.io/mrchuw/alias-site:latest
     container_name: Alias_site
     # ports:
     #   - ${PORT:-12836}:5454
