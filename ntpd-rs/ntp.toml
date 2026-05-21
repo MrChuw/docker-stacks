@@ -1,6 +1,6 @@
-# [[source]]
-# mode = "server"
-# address = "ntp.ce.ix.br"
+[[source]]
+mode = "server"
+address = "ntp.ce.ix.br"
 
 [[source]]
 mode = "server"
