@@ -116,6 +116,10 @@ http://hand.{$DOMAIN} {
   reverse_proxy http://dockhand:3000
 }
 
+http://traccar.{$DOMAIN} {
+  import common
+  reverse_proxy traccar:8082
+}
 
 # Other server
 

@@ -6,8 +6,8 @@ services:
         # * (consumes more disk space and memory) leave everything unchanged
         image: diygod/rsshub
         restart: always
-#        ports:
-#            - "1200:1200"
+        # ports:
+        #     - "1200:1200"
         environment:
             NODE_ENV: production
             CACHE_TYPE: redis
@@ -55,13 +55,13 @@ services:
     rss-bridge:
         image: rssbridge/rss-bridge:latest
         volumes:
-        - ./rssbridge/config:/config
-        - ./rssbridge/cache:/app/cache
-        #ports:
-        #- 8083:80
+            - ./rssbridge/config:/config
+            - ./rssbridge/cache:/app/cache
+        # ports:
+        #     - 8083:80
         restart: unless-stopped
         networks:
-          - caddy
+            - caddy
 
 
 networks:
