@@ -1,0 +1,54 @@
+---
+services:
+  traccar:
+    container_name: traccar
+    image: traccar/traccar:latest
+    depends_on:
+      - database
+    environment:
+      CONFIG_USE_ENVIRONMENT_VARIABLES: "true"
+      DATABASE_DRIVER: ${DATABASE_DRIVER:-org.postgresql.Driver}
+      DATABASE_URL: ${POSTGRES_DB:-traccar}
+      DATABASE_USER: ${POSTGRES_USER:-traccar}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-traccar}
+      NOTIFICATOR_TYPES: ${NOTIFICATOR_TYPES:-traccar}
+      NOTIFICATOR_TRACCAR_KEY: ${NOTIFICATOR_TRACCAR_KEY:-}
+    healthcheck:
+      test: [ "CMD", "wget", "-q", "--spider", "http://localhost:8082/api/health" ]
+      interval: 2m
+      timeout: 5s
+      start_period: 1h
+      retries: 3
+    # ports:
+    #   - "18082:8082"
+    #   - "14000-14500:5000-5500"
+    volumes:
+      - ./traccar/logs:/opt/traccar/logs
+      - ./traccar/media:/opt/traccar/media
+    restart: unless-stopped
+    networks:
+      - traccar-default
+      - caddy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  database:
+    image: timescale/timescaledb:latest-pg17
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-traccar} 
+      POSTGRES_USER: ${POSTGRES_USER:-traccar} 
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-traccar} 
+      TIMESCALEDB_TELEMETRY: ${TIMESCALEDB_TELEMETRY:-off}
+    volumes:
+      - ./traccar/data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - traccar-default
+
+networks:
+  caddy:
+    external: true
+  traccar-default:

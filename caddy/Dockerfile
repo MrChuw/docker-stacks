@@ -1,9 +1,9 @@
 ARG CADDY_VERSION=2.11.3
 FROM caddy:${CADDY_VERSION}-builder AS builder
 
-RUN xcaddy build \
-    --with github.com/mholt/caddy-l4 \
-    --with github.com/mholt/caddy-l4/modules/l4proxy
+RUN xcaddy build 
+    # --with github.com/mholt/caddy-l4 \
+    # --with github.com/mholt/caddy-l4/modules/l4proxy
     # --with github.com/lucaslorentz/caddy-docker-proxy/v2 \
     # --with github.com/mholt/caddy-l4/layer4
     # --with github.com/caddy-dns/cloudflare \
