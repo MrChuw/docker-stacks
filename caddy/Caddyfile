@@ -138,10 +138,6 @@ http://logs.{$DOMAIN} {
   reverse_proxy http://rustlog:8025
 }
 
-http://traccar.{$DOMAIN} {
-  import common
-  reverse_proxy http://rustlog:8025
-}
 
 
 
