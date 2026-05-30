@@ -1,0 +1,17 @@
+---
+services:
+  uuidaas:
+    image: ghcr.io/mrchuw/uuidaas:latest
+    container_name: uuidaas
+#    ports:
+#      - "18379:8000"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    networks:
+      - caddy
+
+networks:
+  caddy:
+    external: true
+  traccar-default:

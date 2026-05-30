@@ -121,6 +121,11 @@ http://traccar.{$DOMAIN} {
   reverse_proxy traccar:8082
 }
 
+http://uuidaas.{$DOMAIN} {
+  import common
+  reverse_proxy uuidaas:8000
+}
+
 # Other server
 
 http://ri.{$DOMAIN} {
