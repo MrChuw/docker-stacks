@@ -12,6 +12,7 @@ COPY custom_files/csp.go ./utils/csp.go
 COPY patches/custom.patch /tmp/custom.patch
 RUN patch -p1 < /tmp/custom.patch
 
+ENV CI=true
 RUN pnpm install && pnpm run build
 RUN go mod download
 RUN GOOS=linux GOARCH=$TARGETARCH CGO_ENABLED=0 go build -o rimgo-bin

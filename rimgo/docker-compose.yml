@@ -1,6 +1,7 @@
 ---
 services:
   rimgo:
+    # image: rimgo-custom
     image: ghcr.io/mrchuw/rimgo:latest
     # ports:
     #   - 33000:3000
