@@ -69,8 +69,8 @@ services:
             POSTGRES_USER: ${POSTGRES_USER:-ntfy}
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pass}
             POSTGRES_DB: ${POSTGRES_DB:-ntfy}
-        ports:
-            - "5432:5432"
+        # ports:
+        #     - "5432:5432"
         volumes:
             - ./postgres_data:/var/lib/postgresql
         shm_size: "128mb"
