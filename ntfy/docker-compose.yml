@@ -40,9 +40,9 @@ services:
             - ./ntfy/cache:/var/cache/ntfy
             - ./ntfy/cache/attachments:/var/cache/ntfy/attachments
             - ./ntfy/data:/var/lib/ntfy
-        # ports:
-        #     - 1325:80
-        #     - 9090:9090
+        ports:
+            #     - 1325:80
+            - ${AUTHORIZED_IP}:9090:9090
         healthcheck:
             test:
                 [

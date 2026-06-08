@@ -126,6 +126,11 @@ http://uuidaas.{$DOMAIN} {
   reverse_proxy uuidaas:8000
 }
 
+http://ntfy.{$DOMAIN} {
+  import common
+  reverse_proxy ntfy:80
+}
+
 # Other server
 
 http://ri.{$DOMAIN} {
@@ -142,7 +147,3 @@ http://logs.{$DOMAIN} {
   import common
   reverse_proxy http://rustlog:8025
 }
-
-
-
-
