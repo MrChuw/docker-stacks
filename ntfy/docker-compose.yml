@@ -1,0 +1,90 @@
+---
+services:
+    ntfy:
+        image: binwiederhier/ntfy
+        container_name: ntfy
+        command:
+            - serve
+        environment:
+            TZ: UTC # optional: set desired timezone
+            NTFY_BASE_URL: ${NTFY_BASE_URL:-}
+            NTFY_BEHIND_PROXY: ${NTFY_BEHIND_PROXY:-}
+            NTFY_AUTH_FILE: ${NTFY_AUTH_FILE:-}
+            NTFY_AUTH_DEFAULT_ACCESS: ${NTFY_AUTH_DEFAULT_ACCESS:-}
+            NTFY_ENABLE_LOGIN: ${NTFY_ENABLE_LOGIN:-}
+            NTFY_REQUIRE_LOGIN: ${NTFY_REQUIRE_LOGIN:-}
+            NTFY_ENABLE_SIGNUP: ${NTFY_ENABLE_SIGNUP:-}
+            NTFY_ATTACHMENT_CACHE_DIR: ${NTFY_ATTACHMENT_CACHE_DIR:-}
+            NTFY_ATTACHMENT_FILE_SIZE_LIMIT: ${NTFY_ATTACHMENT_FILE_SIZE_LIMIT:-}
+            NTFY_ATTACHMENT_EXPIRY_DURATION: ${NTFY_ATTACHMENT_EXPIRY_DURATION:-}
+            NTFY_CACHE_FILE: ${NTFY_CACHE_FILE:-}
+            NTFY_CACHE_DURATION: ${NTFY_CACHE_DURATION:-}
+            NTFY_DATABASE_URL: ${NTFY_DATABASE_URL:-}
+            NTFY_WEB_PUSH_PUBLIC_KEY: ${NTFY_WEB_PUSH_PUBLIC_KEY:-}
+            NTFY_WEB_PUSH_PRIVATE_KEY: ${NTFY_WEB_PUSH_PRIVATE_KEY:-}
+            NTFY_WEB_PUSH_FILE: ${NTFY_WEB_PUSH_FILE:-}
+            NTFY_WEB_PUSH_EMAIL_ADDRESS: ${NTFY_WEB_PUSH_EMAIL_ADDRESS:-}
+            NTFY_SMTP_SENDER_ADDR: ${NTFY_SMTP_SENDER_ADDR:-}
+            NTFY_SMTP_SENDER_FROM: ${NTFY_SMTP_SENDER_FROM:-}
+            NTFY_SMTP_SENDER_USER: ${NTFY_SMTP_SENDER_USER:-}
+            NTFY_SMTP_SENDER_PASS: ${NTFY_SMTP_SENDER_PASS:-}
+            NTFY_SMTP_SENDER_VERIFY: ${NTFY_SMTP_SENDER_VERIFY:-}
+            NTFY_SMTP_SERVER_LISTEN: ${NTFY_SMTP_SERVER_LISTEN:-}
+            NTFY_SMTP_SERVER_DOMAIN: ${NTFY_SMTP_SERVER_DOMAIN:-}
+            NTFY_SMTP_SERVER_ADDR_PREFIX: ${NTFY_SMTP_SERVER_ADDR_PREFIX:-}
+            NTFY_UPSTREAM_BASE_URL: ${NTFY_UPSTREAM_BASE_URL:-}
+            NTFY_AUTH_ACCESS: ${NTFY_AUTH_ACCESS:-}
+            NTFY_AUTH_USERS: ${NTFY_AUTH_USERS:-}
+            NTFY_METRICS_LISTEN_HTTP: ${NTFY_METRICS_LISTEN_HTTP:-}
+        volumes:
+            - ./ntfy/cache:/var/cache/ntfy
+            - ./ntfy/cache/attachments:/var/cache/ntfy/attachments
+            - ./ntfy/data:/var/lib/ntfy
+        # ports:
+        #     - 1325:80
+        #     - 9090:9090
+        healthcheck:
+            test:
+                [
+                    "CMD-SHELL",
+                    "wget -q --tries=1 http://localhost:80/v1/health -O - | grep -Eo '\"healthy\"\\s*:\\s*true' || exit 1",
+                ]
+            interval: 60s
+            timeout: 10s
+            retries: 3
+            start_period: 40s
+        depends_on:
+            postgres:
+                condition: service_healthy
+        restart: unless-stopped
+        init: true
+        networks:
+            - ntfy_default
+            - caddy
+
+    postgres:
+        image: postgres:18-alpine
+        container_name: postgres
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER:-ntfy}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pass}
+            POSTGRES_DB: ${POSTGRES_DB:-ntfy}
+        ports:
+            - "5432:5432"
+        volumes:
+            - ./postgres_data:/var/lib/postgresql
+        shm_size: "128mb"
+        restart: unless-stopped
+        networks:
+            - ntfy_default
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ntfy} -d ${POSTGRES_DB:-ntfy}"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 10s
+
+networks:
+    ntfy_default:
+    caddy:
+        external: true
