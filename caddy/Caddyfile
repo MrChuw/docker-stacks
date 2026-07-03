@@ -126,7 +126,7 @@ http://ntfy.{$DOMAIN} {
   reverse_proxy ntfy:80
 }
 
-hhttp://im.{$DOMAIN}, http://i.{$DOMAIN} {
+http://im.{$DOMAIN}, http://i.{$DOMAIN} {
     import common
 
     header {
