@@ -71,11 +71,6 @@ http://rssbridge.{$DOMAIN} {
   reverse_proxy http://rss-bridge:80
 }
 
-http://im.{$DOMAIN}, http://i.{$DOMAIN} {
-  import common
-  reverse_proxy http://image-server:7776
-}
-
 http://dicio.{$DOMAIN} {
   import common
   reverse_proxy http://dicio:12834
@@ -129,6 +124,48 @@ http://uuidaas.{$DOMAIN} {
 http://ntfy.{$DOMAIN} {
   import common
   reverse_proxy ntfy:80
+}
+
+http://im.{$DOMAIN}, http://i.{$DOMAIN} {
+  import common
+  reverse_proxy http://image-server:7776
+}
+
+http://test.{$DOMAIN} {
+    encode gzip zstd
+
+    proxy_set_header X-Forwarded-Proto $scheme
+    proxy_set_header Host $http_host
+
+    header {
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "strict-origin-when-cross-origin"
+    }
+
+    handle /api* {
+        reverse_proxy upload_server:8000
+    }
+
+    handle {
+        reverse_proxy upload_server:8000 {
+            header_up X-Handled-By "Caddy"
+
+            @accel {
+                header X-Accel-Redirect *
+            }
+
+            handle_response @accel {
+                vars back_to_caddy {rp.header.X-Accel-Redirect}
+                rewrite * {vars.back_to_caddy}
+                uri strip_prefix /internal-media
+                root * /upload_server_uploads
+                file_server {
+                    hide .*
+                }
+            }
+        }
+    }
 }
 
 # Other server
