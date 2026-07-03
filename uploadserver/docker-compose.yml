@@ -1,0 +1,28 @@
+---
+services:
+    upload_server:
+        image: ghcr.io/mrchuw/uploadserver:latest
+        container_name: upload_server
+        restart: unless-stopped
+        working_dir: /app
+        environment:
+            # DATABASE_URL=sqlite://db.sqlite3
+            - UMAMI_URL_BASE=${UMAMI_URL_BASE:-}
+            - UMAMI_WEBSITE_ID=${UMAMI_WEBSITE_ID:-}
+            - UMAMI_HOSTNAME=${UMAMI_HOSTNAME:-}
+            - UPLOAD_DIR=${UPLOAD_DIR:-../uploads}
+            - TRASH_DIR=${TRASH_DIR:-../uploads/.trash}
+            - DEFAULT_MAX_UPLOAD_SIZE=${DEFAULT_MAX_UPLOAD_SIZE:-104857600}
+            - INITIAL_TOKEN_LENGTH=${INITIAL_TOKEN_LENGTH:-5}
+            - RESERVED_NAMES=${RESERVED_NAMES:-api,static,assets,metrics,admin}
+        volumes:
+            - ${HOME}/uploads:/app/uploads
+            - ./db:/app/db
+        #      ports:
+        #          - "8000:8000"
+        networks:
+            - caddy
+
+networks:
+    caddy:
+        external: true
