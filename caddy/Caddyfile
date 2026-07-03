@@ -134,9 +134,6 @@ http://im.{$DOMAIN}, http://i.{$DOMAIN} {
 http://test.{$DOMAIN} {
     encode gzip zstd
 
-    proxy_set_header X-Forwarded-Proto $scheme
-    proxy_set_header Host $http_host
-
     header {
         X-Content-Type-Options "nosniff"
         X-Frame-Options "DENY"
