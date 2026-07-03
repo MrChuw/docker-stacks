@@ -126,13 +126,8 @@ http://ntfy.{$DOMAIN} {
   reverse_proxy ntfy:80
 }
 
-http://im.{$DOMAIN}, http://i.{$DOMAIN} {
-  import common
-  reverse_proxy http://image-server:7776
-}
-
-http://test.{$DOMAIN} {
-    encode gzip zstd
+hhttp://im.{$DOMAIN}, http://i.{$DOMAIN} {
+    import common
 
     header {
         X-Content-Type-Options "nosniff"
