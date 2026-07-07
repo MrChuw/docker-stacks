@@ -16,6 +16,9 @@ services:
             - UMAMI_URL_BASE=${UMAMI_URL_BASE:-}
             - UMAMI_WEBSITE_ID=${UMAMI_WEBSITE_ID:-}
             - UMAMI_HOSTNAME=${UMAMI_HOSTNAME:-}
+            - PORT=&{PORT=-8000}
+            - PROXY=&{PROXY=-i}
+            - CDN=&{CDN=-im}
         volumes:
             - ${HOME}/uploads:/app/uploads
             - ./db:/app/db

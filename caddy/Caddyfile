@@ -126,7 +126,27 @@ http://ntfy.{$DOMAIN} {
   reverse_proxy ntfy:80
 }
 
-http://im.{$DOMAIN}, http://i.{$DOMAIN} {
+http://i.{$DOMAIN} {
+    import common
+
+    header {
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "strict-origin-when-cross-origin"
+    }
+
+    handle /api* {
+        reverse_proxy upload_server:8000
+    }
+
+    handle {
+        reverse_proxy upload_server:8000 {
+            header_up X-Host-Type "no-cache"
+        }
+    }
+}
+
+http://im.{$DOMAIN} {
     import common
 
     header {
@@ -142,6 +162,7 @@ http://im.{$DOMAIN}, http://i.{$DOMAIN} {
     handle {
         reverse_proxy upload_server:8000 {
             header_up X-Handled-By "Caddy"
+            header_up X-Host-Type "cached"
 
             @accel {
                 header X-Accel-Redirect *
@@ -159,6 +180,8 @@ http://im.{$DOMAIN}, http://i.{$DOMAIN} {
         }
     }
 }
+
+
 
 # Other server
 
