@@ -8,8 +8,8 @@ services:
         environment:
             # DATABASE_URL=sqlite://db.sqlite3
             - FORWARDED_PROTO=${FORWARDED_PROTO:-}
-            - UPLOAD_DIR=${UPLOAD_DIR:-../uploads}
-            - TRASH_DIR=${TRASH_DIR:-../uploads/.trash}
+            - UPLOAD_DIR=${UPLOAD_DIR:-/app/uploads}
+            - TRASH_DIR=${TRASH_DIR:-/app/uploads/.trash}
             - DEFAULT_MAX_UPLOAD_SIZE=${DEFAULT_MAX_UPLOAD_SIZE:-104857600}
             - INITIAL_TOKEN_LENGTH=${INITIAL_TOKEN_LENGTH:-5}
             - RESERVED_NAMES=${RESERVED_NAMES:-api,static,assets,metrics,admin}
