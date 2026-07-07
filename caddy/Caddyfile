@@ -142,6 +142,9 @@ http://i.{$DOMAIN} {
     handle {
         reverse_proxy upload_server:8000 {
             header_up X-Host-Type "no-cache"
+            header_up X-Forwarded-For {remote_host}
+            header_up CF-Connecting-IP {http.request.header.CF-Connecting-IP}
+            header_up CF-IPCountry {http.request.header.CF-IPCountry}
         }
     }
 }
@@ -163,6 +166,9 @@ http://im.{$DOMAIN} {
         reverse_proxy upload_server:8000 {
             header_up X-Handled-By "Caddy"
             header_up X-Host-Type "cached"
+            header_up X-Forwarded-For {remote_host}
+            header_up CF-Connecting-IP {http.request.header.CF-Connecting-IP}
+            header_up CF-IPCountry {http.request.header.CF-IPCountry}
 
             @accel {
                 header X-Accel-Redirect *
