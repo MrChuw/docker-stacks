@@ -166,7 +166,6 @@ http://im.{$DOMAIN} {
         reverse_proxy upload_server:8000 {
             header_up X-Handled-By "Caddy"
             header_up X-Host-Type "cached"
-            header_up X-Forwarded-For {remote_host}
             header_up CF-Connecting-IP {http.request.header.CF-Connecting-IP}
             header_up CF-IPCountry {http.request.header.CF-IPCountry}
 
@@ -175,6 +174,9 @@ http://im.{$DOMAIN} {
             }
 
             handle_response @accel {
+                header Cache-Control {rp.header.Cache-Control}
+                header ETag {rp.header.ETag}
+
                 vars back_to_caddy {rp.header.X-Accel-Redirect}
                 rewrite * {vars.back_to_caddy}
                 uri strip_prefix /internal-media
