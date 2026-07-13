@@ -175,7 +175,7 @@ http://im.{$DOMAIN} {
 
             handle_response @accel {
                 header Cache-Control {rp.header.Cache-Control}
-                header ETag {rp.header.ETag}
+                header ETag {rp.header.Etag}
 
                 vars back_to_caddy {rp.header.X-Accel-Redirect}
                 rewrite * {vars.back_to_caddy}
