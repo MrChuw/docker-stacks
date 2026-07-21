@@ -1,29 +1,30 @@
 services:
-  libretranslate:
-    container_name: libretranslate
-    image: libretranslate/libretranslate:latest
-    tty: true
-    # ports:
-    #   - "9484:5000"
-    volumes:
-      - ./data/db:/app/db
-      - ./data/models:/home/libretranslate/.local:rw
-    command:
-      - "--require-api-key-secret"
-    healthcheck:
-      test: ['CMD-SHELL', './venv/bin/python scripts/healthcheck.py']
-    environment:
-      - LT_UPDATE_MODELS=true
-      - LT_SUGGESTIONS=true
-      - LT_LOAD_ALL_LANGUAGES=true
-      - LT_API_KEYS=true
-      - LT_REQ_LIMIT=120
-      - LT_METRICS=true
-      - LT_METRICS_AUTH_TOKEN=${METRICS_AUTH_TOKEN:-super-secret-string-that-need-to-be-replaced}
-    restart: unless-stopped
-    networks:
-      - caddy
+    libretranslate:
+        container_name: libretranslate
+        image: libretranslate/libretranslate:latest
+        tty: true
+        # ports:
+        #   - "9484:5000"
+        volumes:
+            - ./data/db:/app/db
+            - ./data/models:/home/libretranslate/.local:rw
+        command:
+            - "--require-api-key-secret"
+        healthcheck:
+            test: ["CMD-SHELL", "./venv/bin/python scripts/healthcheck.py"]
+        environment:
+            - LT_UPDATE_MODELS=true
+            - LT_SUGGESTIONS=true
+            - LT_LOAD_ALL_LANGUAGES=true
+            - LT_API_KEYS=true
+            - LT_REQ_LIMIT=120
+            - LT_TRUST_FORWARDED_FOR=true
+            - LT_METRICS=true
+            - LT_METRICS_AUTH_TOKEN=${METRICS_AUTH_TOKEN:-super-secret-string-that-need-to-be-replaced}
+        restart: unless-stopped
+        networks:
+            - caddy
 
 networks:
-  caddy:
-    external: true
+    caddy:
+        external: true
