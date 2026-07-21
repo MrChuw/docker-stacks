@@ -1,0 +1,7 @@
+docker exec -it libretranslate /app/venv/bin/ltmanage keys add request_limite_per_minute
+
+docker exec -it libretranslate /app/venv/bin/ltmanage keys add 120
+
+docker exec -it libretranslate /app/venv/bin/ltmanage keys add 120 --key KEY_VALUE
+
+docker exec -it libretranslate /app/venv/bin/ltmanage keys add 120 --char-limit 5000

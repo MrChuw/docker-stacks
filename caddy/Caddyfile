@@ -189,6 +189,11 @@ http://im.{$DOMAIN} {
     }
 }
 
+http://libretranslate.{$DOMAIN} {
+  import common
+  reverse_proxy libretranslate:5000
+}
+
 
 
 # Other server
