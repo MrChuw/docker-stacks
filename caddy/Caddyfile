@@ -189,11 +189,18 @@ http://im.{$DOMAIN} {
     }
 }
 
-http://libretranslate.{$DOMAIN} {
-  import common
-  reverse_proxy libretranslate:5000
-}
+netbird.{$DOMAIN} {
+    # Native gRPC (needs HTTP/2 cleartext to backend)
+    @grpc header Content-Type application/grpc*
+    reverse_proxy @grpc h2c://netbird-server:80
 
+    # Combined server paths (relay, signal, management, OAuth2)
+    @backend path /relay* /ws-proxy/* /api/* /oauth2/*
+    reverse_proxy @backend netbird-server:80
+
+    # Dashboard (everything else)
+    reverse_proxy /* netbird-dashboard:80
+}
 
 
 # Other server
@@ -211,4 +218,9 @@ http://mich.{$DOMAIN} {
 http://logs.{$DOMAIN} {
   import common
   reverse_proxy http://rustlog:8025
+}
+
+http://libretranslate.{$DOMAIN} {
+  import common
+  reverse_proxy libretranslate:5000
 }
