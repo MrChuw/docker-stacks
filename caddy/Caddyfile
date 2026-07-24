@@ -202,6 +202,17 @@ http://netbird.{$DOMAIN} {
     reverse_proxy /* netbird-dashboard:80
 }
 
+*.proxy.{$DOMAIN}, proxy.{$DOMAIN} {
+    import common
+
+    tls {
+        dns cloudflare {$CLOUDFLARE_API_TOKEN}
+    }
+
+    # Encaminha todo o tráfego de sub-subdomínios para o container do netbird-proxy
+    reverse_proxy reverse-proxy:80
+}
+
 
 # Other server
 
