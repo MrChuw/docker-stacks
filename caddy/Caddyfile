@@ -5,15 +5,6 @@ import /shared/shared.caddy
     per_host
   }
   admin :2019
-  log {
-    output file /var/log/caddy/caddy_main.log {
-      roll_size 500MiB
-      roll_keep 10
-      roll_keep_for 365d
-    }
-    format json
-    level INFO
-  }
 }
 
 :2020 {
@@ -142,7 +133,6 @@ http://i.{$DOMAIN} {
     handle {
         reverse_proxy upload_server:8000 {
             header_up X-Host-Type "no-cache"
-            header_up X-Forwarded-For {remote_host}
             header_up CF-Connecting-IP {http.request.header.CF-Connecting-IP}
             header_up CF-IPCountry {http.request.header.CF-IPCountry}
         }
@@ -201,18 +191,6 @@ http://netbird.{$DOMAIN} {
     # Dashboard (everything else)
     reverse_proxy /* netbird-dashboard:80
 }
-
-*.proxy.{$DOMAIN}, proxy.{$DOMAIN} {
-    import common
-
-    tls {
-        dns cloudflare {$CLOUDFLARE_API_TOKEN}
-    }
-
-    # Encaminha todo o tráfego de sub-subdomínios para o container do netbird-proxy
-    reverse_proxy reverse-proxy:80
-}
-
 
 # Other server
 
