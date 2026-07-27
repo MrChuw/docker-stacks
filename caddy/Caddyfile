@@ -206,6 +206,7 @@ http://mich.{$DOMAIN} {
 
 http://logs.{$DOMAIN} {
   import common
+  import block_yandex
   reverse_proxy http://rustlog:8025
 }
 

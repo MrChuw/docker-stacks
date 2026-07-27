@@ -16,13 +16,15 @@
 }
 
 (default-robots) {
-    handle /robots.txt {
-        @no_robots {
-            not file {path}
-        }
-        header @no_robots Content-Type "text/plain"
-        respond @no_robots "User-agent: *\nDisallow: /"
-    }
+	handle /robots.txt {
+		@no_robots {
+			not file {path}
+		}
+		header @no_robots Content-Type "text/plain"
+		respond @no_robots "User-agent: *
+Allow: /$
+Disallow: /"
+	}
 }
 
 (crowdsec_check) {
@@ -37,4 +39,11 @@
     #metrics
     import common_encode
     import default-robots
+}
+
+(block_yandex) {
+	@block_yandexbot {
+		header User-Agent "*YandexBot/3.0*"
+	}
+	respond @block_yandexbot "Access Denied" 403
 }
