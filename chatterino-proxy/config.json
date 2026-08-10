@@ -3,7 +3,6 @@
         "maintainer": "MrChuw",
         "message": "Contact me for updates!",
         "url": "chatproxy.mrchuw.com.br",
-        "userAgent": "chatterino-proxy/1.0",
         "heartbeatInterval": 30,
         "timeout": 30.0,
         "healthTimeout": 5.0,
@@ -32,6 +31,10 @@
             "maintainer": "https://www.twitch.tv/lilb_lxryer",
             "path": "lilb",
             "health": "/"
+        },
+        "https://recentmessages.ivr.fi/api/v2/recent-messages": {
+            "maintainer": "https://www.twitch.tv/leppunen",
+            "path": "leppunen"
         }
     },
     "link_resolverInstances": {
