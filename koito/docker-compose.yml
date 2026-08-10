@@ -1,0 +1,20 @@
+services:
+    koito:
+        image: gabehf/koito:latest
+        container_name: koito
+        # ports:
+        #     - "4110:4110"
+        volumes:
+            - ./koito:/etc/koito
+        environment:
+            - KOITO_DEFAULT_USERNAME=${KOITO_DEFAULT_USERNAME}
+            - KOITO_DEFAULT_PASSWORD=${KOITO_DEFAULT_PASSWORD}
+            - KOITO_DEFAULT_THEME=${KOITO_DEFAULT_THEME}
+            - KOITO_LASTFM_API_KEY=${KOITO_LASTFM_API_KEY}
+        restart: unless-stopped
+        networks:
+            - caddy
+
+networks:
+    caddy:
+        external: true
