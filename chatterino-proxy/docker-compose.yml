@@ -9,8 +9,6 @@ services:
         - ANALYTICS_UUID=${ANALYTICS_UUID:-}
     volumes:
         - ./config.json:/app/config.json:ro
-    environment:
-        - PROXY_CONFIG=/config/config.json
     restart: unless-stopped
     networks:
         - caddy
