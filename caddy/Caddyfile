@@ -192,6 +192,12 @@ http://netbird.{$DOMAIN} {
     reverse_proxy /* netbird-dashboard:80
 }
 
+
+http://chatproxy.{$DOMAIN} {
+  import common
+  reverse_proxy chatterino-proxy:8000
+}
+
 # Other server
 
 http://ri.{$DOMAIN} {
