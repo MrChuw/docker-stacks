@@ -1,17 +1,14 @@
 services:
     chatterino-proxy:
-    image: ghcr.io/mrchuw/chatterino-proxy:latest
-    container_name: chatterino-proxy
-    # ports:
-    #   - ${PORT:-8000}:8000
-    environment:
-        - ANALYTICS_URL=${ANALYTICS_URL:-}
-        - ANALYTICS_UUID=${ANALYTICS_UUID:-}
-    volumes:
-        - ./config.json:/app/config.json:ro
-    restart: unless-stopped
-    networks:
-        - caddy
+        image: ghcr.io/mrchuw/chatterino-proxy:latest
+        container_name: chatterino-proxy
+        # ports:
+        #   - ${PORT:-8000}:8000
+        volumes:
+            - ./config.json:/app/config.json:ro
+        restart: unless-stopped
+        networks:
+            - caddy
 
 networks:
     caddy:
