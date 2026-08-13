@@ -1,0 +1,23 @@
+services:
+    request-baskets:
+        image: darklynx/request-baskets:latest
+        container_name: request-baskets
+        # ports:
+        #     - "55555:55555"
+        volumes:
+            - ./baskets_data:/var/lib/rbaskets
+        environment:
+            - LISTEN=0.0.0.0
+            - DB=bolt
+            - FILE=/var/lib/rbaskets/baskets.db
+            - THEME=adaptive
+            # - MODE=
+            - TOKEN=${TOKEN}
+            - PATHPREFIX=${PATHPREFIX}
+        restart: unless-stopped
+        networks:
+            - caddy
+
+networks:
+    caddy:
+        external: true
