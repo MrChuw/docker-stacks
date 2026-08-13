@@ -202,6 +202,12 @@ http://koito.{$DOMAIN} {
   reverse_proxy koito:4110
 }
 
+http://rbaskets.{$DOMAIN} {
+  import common
+  reverse_proxy request-baskets:55555
+}
+
+
 # Other server
 
 http://ri.{$DOMAIN} {

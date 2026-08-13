@@ -14,6 +14,7 @@ services:
             # - MODE=
             - TOKEN=${TOKEN}
             - PATHPREFIX=${PATHPREFIX}
+            - MODE=restricted
         restart: unless-stopped
         networks:
             - caddy
