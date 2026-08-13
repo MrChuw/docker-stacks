@@ -1,6 +1,6 @@
 services:
     request-baskets:
-        image: darklynx/request-baskets:latest
+        image: ghcr.io/mrchuw/rbaskets:latest
         container_name: request-baskets
         # ports:
         #     - "55555:55555"
