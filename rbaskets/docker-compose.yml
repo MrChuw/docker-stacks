@@ -11,7 +11,6 @@ services:
             - DB=bolt
             - FILE=/var/lib/rbaskets/baskets.db
             - THEME=adaptive
-            # - MODE=
             - TOKEN=${TOKEN}
             - PATHPREFIX=${PATHPREFIX}
             - MODE=restricted

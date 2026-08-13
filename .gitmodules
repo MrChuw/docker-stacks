@@ -4,3 +4,6 @@
 [submodule "rustlog/rustlog-src"]
 	path = rustlog/rustlog-src
 	url = https://github.com/boring-nick/rustlog
+[submodule "rbaskets/request-baskets"]
+	path = rbaskets/request-baskets
+	url = https://github.com/darklynx/request-baskets
