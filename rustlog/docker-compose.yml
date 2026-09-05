@@ -25,6 +25,8 @@ services:
 
   rustlog:
     container_name: rustlog
+    # build:
+    #     context: .
     image: ghcr.io/mrchuw/rustlog:latest
     # ports:
     #   - 18025:8025
