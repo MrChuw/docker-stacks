@@ -5,7 +5,7 @@ COPY rustlog-src/web/ .
 RUN yarn install --ignore-optional
 RUN yarn build
 
-FROM --platform=$BUILDPLATFORM rust:1.95-bookworm AS chef
+FROM --platform=$BUILDPLATFORM rust:1.98-trixie AS chef
 USER root
 ENV CARGO_PROFILE_RELEASE_LTO=true
 RUN cargo install cargo-chef
