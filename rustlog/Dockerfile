@@ -2,6 +2,9 @@ FROM --platform=$BUILDPLATFORM node:18-alpine AS frontend
 WORKDIR /src/web
 # Copia o frontend de dentro da subpasta rustlog-src
 COPY rustlog-src/web/ .
+COPY patches/remove-opt-button.patch /tmp/remove-opt-button.patch
+RUN apk add --no-cache patch \
+    && patch -p2 -d /src/web < /tmp/remove-opt-button.patch
 RUN yarn install --ignore-optional
 RUN yarn build
 
@@ -15,6 +18,7 @@ FROM --platform=$BUILDPLATFORM chef AS planner
 COPY . . 
 RUN apt-get update && apt-get install -y patch
 RUN patch -p1 -d rustlog-src < patches/first.patch
+RUN patch -p1 -d rustlog-src < patches/remove-opt-button.patch
 WORKDIR /app/rustlog-src
 RUN cargo chef prepare --recipe-path ../recipe.json
 
@@ -38,6 +42,7 @@ RUN RUSTFLAGS="$(cat /flags.txt)" cargo chef cook --target "$(cat /target.txt)" 
 
 COPY . .
 RUN patch -p1 -d rustlog-src < patches/first.patch
+RUN patch -p1 -d rustlog-src < patches/remove-opt-button.patch
 COPY --from=frontend /src/web rustlog-src/web/
 
 WORKDIR /app/rustlog-src
